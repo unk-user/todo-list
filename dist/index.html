@@ -1,1 +1,46 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Document</title><script defer="defer" src="main.js"></script></head><body></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>_DoList</title>
+</head>
+<body>
+    <header>
+        <div id="left">
+            <input type="checkbox" id="checkbox">
+            <label for="checkbox" id="menu"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></label>
+            <h1>_Dolist</h1>
+        </div>
+        <div id="right">
+            <div id="search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+            <div id="profile"></div>
+        </div>
+    </header>
+    <main>
+        <nav id="navbar">
+            <div id="defaultProjects" class="projectsnav">
+                <Btn id="InboxBtn" class="navBtn">Inbox</Btn>
+                <Btn id="TodayBtn" class="navBtn">Today</Btn>
+                <Btn id="weekBtn" class="navBtn">This week</Btn>
+            </div>
+            <div id="userProjects" class="projectsnav">
+                <div id="myProjects" class="navBtn navHeader"><p>My Projects</p><svg id="addProject" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+                <Btn id="school" class="navBtn">School</Btn>
+            </div>
+        </nav>
+        <section id="mainSection">
+            <div id="content">
+                <div id="title"><p>Inbox</p></div>
+                <div id="tasksContainer">
+                    <div id="task-1" class="task">Task1</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>

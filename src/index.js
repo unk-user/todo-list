@@ -1,4 +1,4 @@
-//tasks & projects classes
+//tasks & projects Classes
 
 class Task {
     constructor(title, description = 'none', dueDate = 'none', priority) {
@@ -73,6 +73,7 @@ class TodoList {
         this.projects = [];
         this.projects.push(new Project('Inbox'));
         this.projects.push(new Project('Today'));
+        this.projects.push(new Project('school'));
     }
     getProjectByTitle(title){
         return this.projects.find((project) => project.getTitle() === title);
@@ -121,3 +122,29 @@ class Storage {
         return todoList;
     }
 }
+
+//navbar 
+
+const navCheck = document.querySelector('#checkbox');
+const nav = document.querySelector('nav');
+
+navCheck.addEventListener('click', ()=>{
+    const contentSection = document.querySelector('#mainSection');
+    if(navCheck.checked){
+        nav.style.position = 'relative';
+        nav.style.left = '0';
+        contentSection.style.width = 'calc(100% - 260px)';
+    } else {
+        nav.style.position = 'absolute';
+        nav.style.left = '-300px';
+        contentSection.style.width = '100%';
+    }
+
+});
+
+
+//Main UI
+
+
+
+

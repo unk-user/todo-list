@@ -1,0 +1,123 @@
+:root {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+}
+header {
+    height: 43px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 20px;
+    background-color: rgb(42, 43, 60);
+    color: white;
+}
+header > div {
+    height: 100%;
+}
+header h1, header h2 {
+    margin: 0;
+}
+#left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    gap: 10px;
+}
+#menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    padding: 4px;
+}
+#menu:hover {
+    cursor: pointer;
+    background-color: rgb(58, 59, 78);
+}
+#right{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+#search {
+    display: flex;
+    align-items: center;
+
+}
+#profile{
+    width: 34px;
+    height: 34px;
+    background-color: lightgrey;
+    border-radius: 50%;
+}
+main {
+    height: calc(100vh - 43px);
+    display: flex;
+}
+nav {
+    height: 100%;
+    width: 260px;
+    background-color: rgb(226, 223, 233);
+    position: absolute;
+    left: -300px;
+    transition: 0.5s;
+}
+#checkbox {
+    display: none;
+}
+#mainSection {
+    height: calc(100% - 60px);
+    padding: 30px 0;
+    width: calc(100% - 260px);
+}
+.projectsnav {
+    width: 100%;
+    display: grid;
+    grid-auto-rows: 40px;
+    font-size: 1.5rem;
+    margin: 24px 0 0 0;
+}
+.navBtn {
+    height: 35px;
+    margin: 3px 18px;
+    padding: 0 6px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.navBtn:hover,.navBtn:active{
+    background-color: rgb(220, 215, 230);
+    border: 1px solid rgb(237, 236, 241);
+    height: 33px;
+    padding: 0 5px;
+}
+.navHeader {
+    font-weight: bold;
+}
+#addProject:hover {
+    cursor: pointer;
+    color: rgb(110, 108, 108);
+}
+#content {
+    width: 70vw;
+    background-color: lightgrey;
+    padding: 0 10px 5px;
+    margin: auto;
+    height: calc(100% - 80px);
+}
+#title {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 2px solid rgb(36, 35, 35);
+}
