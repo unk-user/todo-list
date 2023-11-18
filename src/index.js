@@ -1,7 +1,7 @@
 //tasks & projects Classes
 
 class Task {
-    constructor(title, description = 'none', dueDate = 'none', priority) {
+    constructor(title, description = 'none', dueDate = 'none', priority = 'none') {
         this.title = title; 
         this.description = description; 
         this.dueDate = dueDate;
@@ -80,7 +80,6 @@ class Todo {
         this.projects = [];
         this.projects.push(new Project('Inbox', 'default'));
         this.projects.push(new Project('Today', 'default'));
-        this.projects.push(new Project('school', 'user'));
     }
     getProjectByTitle(title){
         return this.projects.find((project) => project.getTitle() === title);
@@ -218,31 +217,48 @@ class UI {
 
     static projectEventListeners(projectPreview, project, removeBtn) {
 
-        projectPreview.addEventListener('mousedown', () => {
-            document.querySelector('#tasksContainer').innerHTML = '<div id="addTask">+ Add task</div>';
+        projectPreview.addEventListener('click', () => {
             this.setActiveNav(projectPreview);
             this.loadTasks(project);
         })
         if(removeBtn !== 'none'){
-            removeBtn.addEventListener('mouseup', () => {
-                this.setActiveNav(projectPreview);
-                this.loadTasks(todo.getProjectByTitle('Inbox'));
+            removeBtn.addEventListener('mousedown', () => {
+                this.setActiveNav(document.querySelector('#InboxBtn'));
                 this.deleteProject(project);
+                this.loadTasks(todo.getProjectByTitle('Inbox'));
             });
         }
     }
     static setActiveNav(projectP) {
         document.querySelectorAll('.link').forEach((btn) => {
-            if(btn.classList === 'navBtn link activeNav'){
-                btn.classList = 'navBtn link';
-            } else {
+            let classStr = JSON.stringify(btn.classList);
+            if(classStr.includes('activeNav') && classStr.includes('user')){
                 btn.classList = 'navBtn link user';
-            }
+            } else if(classStr.includes('activeNav')){
+                btn.classList = 'navBtn link';
+            };
         })
         projectP.classList += ' activeNav';
+        
     }
 
-    static loadTasks(project) {     
+    static TasksListeners(project, task) {
+        let taskDivs = document.querySelectorAll('.task');
+        taskDivs.forEach((taskDiv) => {
+            let right = taskDiv.lastChild;
+            right.querySelector('#removeBtn').addEventListener('click', () => {
+                this.removeTaskDiv(project, project.getTaskByTitle(`${taskDiv.id}`));
+            })
+        })
+    }
+    static removeTaskDiv(project, task) {
+        project.removeTask(task);
+        this.loadTasks(project);
+        Storage.saveTodoList(todo);
+    }
+    static loadTasks(project) {
+        if(project !== todo.getProjectByTitle('Today')){document.querySelector('#tasksContainer').innerHTML = '<div id="addTask">+ Add task</div>'}
+        else {document.querySelector('#tasksContainer').innerHTML = ''}
         project.getTasks().forEach((task) => {
             let taskDiv = document.createElement('div');
             taskDiv.setAttribute('id', `${task.getTitle()}`);
@@ -254,11 +270,13 @@ class UI {
                 </div>
                 <div class="taskRight">
                     <p>${task.getDate()}</p>
-                    <button id="modifyBtn" class="taskBtn">M</button>
+                    <p>${task.getPrio()}</p>
                     <button id="removeBtn" class="taskBtn">X</button>
                 </div>`;
             document.querySelector('#tasksContainer').appendChild(taskDiv);
         });
+        this.TasksListeners(project);
+        this.addTaskListener(project);
     }
 
     static deleteProject(project) {
@@ -323,10 +341,75 @@ class UI {
         this.refreshNav();
     }
 
+    static openAddTask(Project) {
+        const taskContainer = document.querySelector('#tasksContainer');
+
+        if(document.querySelector('#newTaskPopUp') === null){
+            let taskPopUp = document.createElement('div');
+            taskPopUp.setAttribute('id', 'newTaskPopUp');
+            taskPopUp.innerHTML = `
+            <input type="name" placeholder="Task Name" class="text-input" id="newName">
+                        <input type="text" placeholder="description" class="text-input" id="newDesc">
+                        <div id="date-priority">
+                            <input type="date" class="nonText-input" id="newDate">
+                            <label for="newPriority">Priority</label>
+                            <select name="" id="newPriority" class="nonText-input">
+                            <option value="priority 1">priority 1</option>
+                            <option value="priority 2">priority 2</option>
+                            <option value="priority 3">priority 3</option>
+                            <option value="priority 4">priority 4</option>
+                            </select>
+                            <button id="saveTask" class="taskAction">Save</button>
+                            <button id="cancelTask" class="taskAction">Cancel</button>
+                        </div>`
+
+
+            taskContainer.innerHTML = '<div id="addTask">+ Add task</div>';
+            taskContainer.appendChild(taskPopUp);
+            this.taskPopUpListeners(Project);
+        }
+    }
+    static closeAddTask(Project) {
+        const taskContainer = document.querySelector('#tasksContainer');
+        const popUp = document.querySelector('#newTaskPopUp');
+
+        if(popUp !== 'null'){
+            popUp.remove();
+            this.loadTasks(Project);
+        }
+    }
+
+    static saveNewTask(Project) {
+        let name = document.querySelector('#newName').value;
+        let desc = document.querySelector('#newDesc').value;
+        let date = document.querySelector('#newDate').value;
+        let priority = document.querySelector('#newPriority').value;
+    
+        if(name !== '') {
+            let newTask = new Task(name, desc, date, priority);
+            Project.addTask(newTask);
+            Storage.saveTodoList(todo);
+        }
+    }
+    static taskPopUpListeners(Project){
+        document.querySelector('#saveTask').addEventListener('click', () => {
+            this.saveNewTask(Project);
+            this.closeAddTask(Project);
+        });
+        document.querySelector('#cancelTask').addEventListener('click', () => {
+            this.closeAddTask(Project);
+        });
+    }
+    static addTaskListener(project){
+        document.querySelector('#addTask').addEventListener('click', () => {
+            this.openAddTask(project);
+        });
+    }
+
+
 }
 
 UI.loadUi();
-todo.getProjectByTitle('school').addTask(new Task('hew'));
 
 
 
