@@ -157,11 +157,32 @@ nav {
     width: 170px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 2px;
 }
 .taskBtn {
     height: 26px;
-    width: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background-color: transparent;
+}
+#modifyBtn {
+    margin-left: 10px;
+    color:rgba(88, 79, 79, 0.978)
+}
+#modifyBtn:hover {
+    color: black;
+}
+#removeBtn {
+    color: rgb(193, 69, 69);
+}
+#removeBtn:hover {
+    color: rgb(228, 23, 23);
+}
+.taskBtn:hover {
+    cursor: pointer;
 }
 .navBtn:hover  .removeProject {
     display: flex;
@@ -180,6 +201,8 @@ nav {
 #addTask {
     margin-left: 20px;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
 }
 #addTask:hover {
     color: green;
