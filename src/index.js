@@ -239,16 +239,23 @@ class UI {
             };
         })
         projectP.classList += ' activeNav';
+        document.querySelector('#title').textContent = projectP.textContent;
         
     }
 
-    static TasksListeners(project, task) {
+    static TasksListeners(project) {
         let taskDivs = document.querySelectorAll('.task');
         taskDivs.forEach((taskDiv) => {
             let right = taskDiv.lastChild;
             right.querySelector('#removeBtn').addEventListener('click', () => {
                 this.removeTaskDiv(project, project.getTaskByTitle(`${taskDiv.id}`));
-            })
+            });
+        })
+    }
+    static modifyTaskListener(project, task, taskDiv){
+        taskDiv.lastChild.querySelector('#modifyBtn').addEventListener('click', () => {
+            this.openTaskEditor();
+            this.taskEditorModify(project, task)
         })
     }
     static removeTaskDiv(project, task) {
@@ -271,9 +278,11 @@ class UI {
                 <div class="taskRight">
                     <p>${task.getDate()}</p>
                     <p>${task.getPrio()}</p>
+                    <button id="modifyBtn" class="taskBtn">M</button>
                     <button id="removeBtn" class="taskBtn">X</button>
                 </div>`;
             document.querySelector('#tasksContainer').appendChild(taskDiv);
+            this.modifyTaskListener(project, task, taskDiv);
         });
         this.TasksListeners(project);
         this.addTaskListener(project);
@@ -326,6 +335,14 @@ class UI {
                     this.closeNewProjectL();
                 }
             });
+            newProjectCard.addEventListener('keyup', (e) => {
+                if(input.value !== '' && e.key === 'Enter'){
+                    let newProject = new Project(input.value, 'user');
+                    todo.addProject(newProject);
+                    Storage.saveTodoList(todo);
+                    this.closeNewProjectL();
+                }
+            });
             cancelNewProject.addEventListener('click', () => {
                 this.closeNewProjectL()
             })
@@ -341,7 +358,7 @@ class UI {
         this.refreshNav();
     }
 
-    static openAddTask(Project) {
+    static openTaskEditor() {
         const taskContainer = document.querySelector('#tasksContainer');
 
         if(document.querySelector('#newTaskPopUp') === null){
@@ -366,11 +383,9 @@ class UI {
 
             taskContainer.innerHTML = '<div id="addTask">+ Add task</div>';
             taskContainer.appendChild(taskPopUp);
-            this.taskPopUpListeners(Project);
         }
     }
     static closeAddTask(Project) {
-        const taskContainer = document.querySelector('#tasksContainer');
         const popUp = document.querySelector('#newTaskPopUp');
 
         if(popUp !== 'null'){
@@ -391,18 +406,67 @@ class UI {
             Storage.saveTodoList(todo);
         }
     }
-    static taskPopUpListeners(Project){
+    static modifyTask(task) {
+        let name = document.querySelector('#newName').value;
+        let desc = document.querySelector('#newDesc').value;
+        let date = document.querySelector('#newDate').value;
+        let priority = document.querySelector('#newPriority').value;
+    
+        if(name !== '') {
+            task.setTitle(name);
+        }
+        if(desc !== ''){
+            task.setDesc(desc);
+        }
+        if(date !== ''){
+            task.setDate(date);
+        }
+        if(priority !== ''){
+            task.setPrio(priority);
+        }
+        Storage.saveTodoList(todo);
+    }
+    static taskEditorSaveNew(Project){
         document.querySelector('#saveTask').addEventListener('click', () => {
             this.saveNewTask(Project);
             this.closeAddTask(Project);
         });
+        document.querySelector('#newTaskPopUp').addEventListener('keyup', (e) => {
+            if(e.key === 'Enter'){
+                this.saveNewTask(Project);
+                this.closeAddTask(Project);
+            }
+            else if(e.key === 'Escape'){
+                this.closeAddTask(Project);
+            }
+        });
+        document.querySelector('#cancelTask').addEventListener('click', () => {
+            this.closeAddTask(Project);
+        });
+    }
+    static taskEditorModify(Project, task){
+        document.querySelector('#saveTask').addEventListener('click', () => {
+            this.modifyTask(task);
+            this.closeAddTask(Project);
+        });
+        document.querySelector('#newTaskPopUp').addEventListener('keyup', (e) => {
+            if(e.key === 'Enter'){
+                this.modifyTask(task);
+                this.closeAddTask(Project);
+            }
+            else if(e.key === 'Escape'){
+                this.closeAddTask(Project);
+            }
+        });
+        
         document.querySelector('#cancelTask').addEventListener('click', () => {
             this.closeAddTask(Project);
         });
     }
     static addTaskListener(project){
         document.querySelector('#addTask').addEventListener('click', () => {
-            this.openAddTask(project);
+            this.openTaskEditor();
+            this.taskEditorSaveNew(project);
         });
     }
 
