@@ -1,3 +1,7 @@
+import Task from "./task";
+import Project from "./project";
+import Todo from "./todo";
+
 export default class Storage {
     static saveTodoList(todoL){
         localStorage.setItem('todolist', JSON.stringify(todoL));

@@ -135,6 +135,7 @@ nav {
 #tasksContainer {
     display: flex;
     flex-direction: column;
+    margin: 0 20px;
 }
 .task {
     height: 40px;
@@ -154,11 +155,17 @@ nav {
 
 }
 .taskRight {
-    width: 170px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 65px 60px 30px 40px;
     align-items: center;
-    justify-content: center;
-    gap: 2px;
+    gap: 5px;
+}
+.task-date{
+    text-align:right;
+    margin-right: 5px;
+}
+.task-priority {
+    text-align: center;
 }
 .taskBtn {
     height: 26px;
@@ -169,7 +176,6 @@ nav {
     background-color: transparent;
 }
 #modifyBtn {
-    margin-left: 10px;
     color:rgba(88, 79, 79, 0.978)
 }
 #modifyBtn:hover {

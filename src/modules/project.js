@@ -1,3 +1,5 @@
+import { parse , isToday, isThisWeek} from 'date-fns'
+
 export default class Project {
     constructor(title, mode) {
         this.title = title;
@@ -34,6 +36,18 @@ export default class Project {
     }
     removeTask(task) {
         this.tasks = this.tasks.filter((Item) => Item !== task);
+    }
+    getTodayTasks(){
+        return this.tasks.filter((task) => {
+            let parsedDate = parse(task.getDate(), 'yyyy-MM-dd', new Date());
+            return isToday(parsedDate);
+        })
+    }
+    getWeekTasks(){
+        return this.tasks.filter((task) => {
+            let parsedDate = parse(task.getDate(), 'yyyy-MM-dd', new Date());
+            return isThisWeek(parsedDate);
+        })
     }
 }
 
