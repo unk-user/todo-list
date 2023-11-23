@@ -19,5 +19,12 @@ navCheck.addEventListener('click', ()=>{
     }
 
 });
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+        document.querySelector('#loadingScreen').style.top = '200vh';
+      
+      UI.loadUi();
+    }, 1000);
 
-UI.loadUi();
+  });
+

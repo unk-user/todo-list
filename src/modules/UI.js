@@ -167,12 +167,16 @@ export default class UI {
         const previewUser = document.querySelector('#userProjects');
 
         addBtn.addEventListener('click', () => {
+            if(document.querySelector('#newProjectCard')){
+                return 
+            }
             let newProjectCard = document.createElement('div');
             newProjectCard.setAttribute('id', 'newProjectCard');
             
             const input = document.createElement('input');
             input.setAttribute('id', 'newProjectTitle');
             input.setAttribute('type', 'name');
+            input.setAttribute('placeholder', 'Project Title');
             newProjectCard.appendChild(input);
             const newProjectAction = document.createElement('div');
             newProjectAction.setAttribute('id', 'newProjectAction');
@@ -330,13 +334,19 @@ export default class UI {
             this.openTaskEditor();
             this.taskEditorSaveNew(project);
         });
+        document.querySelector('#mainSection').addEventListener('keyup', (e) => {
+            if(e.key === '+' || e.key === '='){
+                this.openTaskEditor();
+                this.taskEditorSaveNew(project);
+            }
+        });
     }
     static formatDate(task) {
         if(task.getDate() !== ''){
             let parsedDate = parse(task.getDate(), 'yyyy-MM-dd', new Date());
             return format(parsedDate, 'MM/dd/yy');
         } else {
-            return 'date not specified';
+            return '';
         }
     }
 
