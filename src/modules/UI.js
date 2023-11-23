@@ -111,6 +111,9 @@ export default class UI {
         })
     }
     static removeTaskDiv(project, task) {
+        if(project.getTitle() === 'Today' || project.getTitle() === 'This week'){
+            todo.removeTaskAll(task)
+        }
         project.removeTask(task);
         this.loadTasks(project);
         Storage.saveTodoList(todo);
@@ -134,10 +137,16 @@ export default class UI {
                     <button id="removeBtn" class="taskBtn"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
                 </div>`;
             document.querySelector('#tasksContainer').appendChild(taskDiv);
-            this.modifyTaskListener(project, task, taskDiv);
+            if(project.getTitle() === 'Today' || project.getTitle() === 'This week') {
+                taskDiv.querySelector('#modifyBtn').textContent = '';
+            } else {
+                this.modifyTaskListener(project, task, taskDiv);
+            }
         });
         this.TasksListeners(project);
         this.addTaskListener(project);
+        todo.getTodayWeek();
+        Storage.saveTodoList(todo);
     }
 
     static deleteProject(project) {
@@ -147,6 +156,7 @@ export default class UI {
     }
 
     static loadUi() {
+        todo.getTodayWeek();
         this.loadNavItems();
         this.loadTasks(todo.getProjectByTitle('Inbox'));
         this.openNewProjectL();
@@ -251,7 +261,7 @@ export default class UI {
         let desc = document.querySelector('#newDesc').value;
         let date = document.querySelector('#newDate').value;
         let priority = document.querySelector('#newPriority').value;
-    
+
         if(name !== '') {
             let newTask = new Task(name, desc, date, priority);
             Project.addTask(newTask);
@@ -324,8 +334,7 @@ export default class UI {
     static formatDate(task) {
         if(task.getDate() !== ''){
             let parsedDate = parse(task.getDate(), 'yyyy-MM-dd', new Date());
-
-        return format(parsedDate, 'MM/dd/yy');
+            return format(parsedDate, 'MM/dd/yy');
         } else {
             return 'date not specified';
         }

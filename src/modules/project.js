@@ -37,6 +37,9 @@ export default class Project {
     removeTask(task) {
         this.tasks = this.tasks.filter((Item) => Item !== task);
     }
+    pushTasks(tasks){
+        this.tasks.push(...tasks);
+    }
     getTodayTasks(){
         return this.tasks.filter((task) => {
             let parsedDate = parse(task.getDate(), 'yyyy-MM-dd', new Date());

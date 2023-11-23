@@ -26,18 +26,23 @@ export default class Todo {
     containsProject(title){
         return this.project.some((project) => project.getTitle() === title);
     }
-    getTodayTasks(){
-        let todayTasks = [];
-        this.projects.forEach((project) => {
-            todayTasks.concat(project.getTodayTasks());
+    getTodayWeek(){
+        let today = this.getProjectByTitle('Today');
+        let week = this.getProjectByTitle('This week');
+        today.setTasks([]);
+        week.setTasks([]);
+        this.getProjects().forEach((project) => {
+            if(project.getTitle() !== 'Today' && project.getTitle() !== 'This week'){
+                today.pushTasks(project.getTodayTasks());
+                week.pushTasks(project.getWeekTasks());
+            }
         })
-        return todayTasks;
     }
-    getWeekTasks(){
-        let weekTasks = [];
-        this.projects.forEach((project) => {
-            weekTasks.concat(project.getWeekTasks());
+
+    
+    removeTaskAll(task) {
+        this.getProjects().forEach((project) => {
+            project.removeTask(task);
         })
-        return weekTasks;
     }
 }
